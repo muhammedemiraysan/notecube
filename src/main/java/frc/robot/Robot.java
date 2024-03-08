@@ -37,11 +37,14 @@ public class Robot extends TimedRobot {
     final double stickX = -m_stick.getRawAxis(4);
     
     if(m_stick.getRawButton(4) == false){
-      m_drive.arcadeDrive(stickY,stickX);}
+      if(m_stick.getRawAxis(5) > 0.1){}
+          m_drive.arcadeDrive((stickY*(1.1-(m_stick.getRawAxis(5)/2))), (stickX*((1.1-m_stick.getRawAxis(5)/2))));
+      if (m_stick.getRawAxis(5) <= 0.1){
+          m_drive.arcadeDrive(stickY,stickX);}}
     if(m_stick.getRawButton(4) == true){
       m_drive.arcadeDrive(stickY,m_Limelight.Turn_pid.calculate(m_Limelight.getX(), 0));}    
     m_climb.setMotor(m_stick.getPOV());
-    m_shooter.setMotor(m_stick.getRawButton(1),m_stick.getRawButton(2),m_stick.getRawButtonReleased(1),m_stick.getRawButtonReleased(2));
+    m_shooter.setMotor(m_stick.getRawButton(5),m_stick.getRawButton(6),m_stick.getRawButtonReleased(5),m_stick.getRawButtonReleased(6));
   }
   public void autonomousInit() {
     m_timer.start();
