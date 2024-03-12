@@ -34,17 +34,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     final double stickY = -m_stick.getY();
-    final double stickX = -m_stick.getRawAxis(4);
+    final double stickX = -m_stick.getRawAxis(2);
     
     if(m_stick.getRawButton(4) == false){
-      if(m_stick.getRawAxis(5) > 0.1){}
-          m_drive.arcadeDrive((stickY*(1.1-(m_stick.getRawAxis(5)/2))), (stickX*((1.1-m_stick.getRawAxis(5)/2))));
-      if (m_stick.getRawAxis(5) <= 0.1){
+      if(m_stick.getRawButton(7) == true){}
+          m_drive.arcadeDrive((stickY/2), (stickX/2));
+      if (m_stick.getRawButton(7) == false){
           m_drive.arcadeDrive(stickY,stickX);}}
     if(m_stick.getRawButton(4) == true){
       m_drive.arcadeDrive(stickY,m_Limelight.Turn_pid.calculate(m_Limelight.getX(), 0));}    
     m_climb.setMotor(m_stick.getPOV());
-    m_shooter.setMotor(m_stick.getRawButton(5),m_stick.getRawButton(6),m_stick.getRawButtonReleased(5),m_stick.getRawButtonReleased(6));
+    m_shooter.setMotor(m_stick.getRawButton(5),m_stick.getRawButton(6),m_stick.getRawButtonReleased(5),m_stick.getRawButtonReleased(6),autonomous_shooter);
   }
   public void autonomousInit() {
     m_timer.start();
@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("autonomous stage", m_stage);
     SmartDashboard.putBoolean("autonomous shooter", autonomous_shooter);
     SmartDashboard.putBoolean("autonomous stopShooter", autonomous_stopShooter);
-    m_shooter.setMotor(autonomous_shooter, false, autonomous_stopShooter,false);
+    m_shooter.setMotor(autonomous_shooter, false, autonomous_stopShooter,false,autonomous_shooter);
     switch(m_stage){
       case 1:
         if(m_timer.get() < 0.5){
@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
         break;
       case 2:
         m_drive.arcadeDrive(-1,0);
-        if(m_timer.get() > 3){
+        if(m_timer.get() > 1.2){
           m_drive.arcadeDrive(0,0);
           m_stage++;
           m_timer.reset();

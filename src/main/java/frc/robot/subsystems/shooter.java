@@ -15,23 +15,31 @@ public class shooter extends SubsystemBase{
         shooter_upMotor.restoreFactoryDefaults();
         shooter_lowMotor.restoreFactoryDefaults();
     }
-    public void setMotor(Boolean button1,Boolean button2,Boolean button12,boolean button22){
+    public void setMotor(Boolean button1,Boolean button2,Boolean button12,boolean button22,boolean autonomous_shooter){
         SmartDashboard.putBoolean("Button1", button1);
         SmartDashboard.putBoolean("Button2", button2);
         SmartDashboard.putBoolean("Button12", button12);
         SmartDashboard.putBoolean("Button22", button22);
         SmartDashboard.putNumber("Up Shooter Motor Speed", Upshooterspeed);
         SmartDashboard.putNumber("Low Shooter Motor Speed", Lowshooterspeed);
-        shooter_upMotor.set(Upshooterspeed);
-        shooter_lowMotor.set(Lowshooterspeed); 
+        shooter_upMotor.set(-Upshooterspeed);
+        shooter_lowMotor.set(-Lowshooterspeed); 
         if(shooting == false){
-            if(button1 == true){
+            if(button2 == true){
+                // shooting = true;
+                // m_timer.start();
+                Upshooterspeed = 1;
+                
+
+            }
+            if(autonomous_shooter == true){
                 shooting = true;
                 m_timer.start();
             }
-            if(button2 == true){
-                Upshooterspeed = -1;
-                Lowshooterspeed = -1;
+            if(button1 == true){
+                // Upshooterspeed = -1;
+                // Lowshooterspeed = -1;
+                Lowshooterspeed = 1;
             }
             if(button12 == true){
                 Upshooterspeed = 0;
@@ -42,15 +50,15 @@ public class shooter extends SubsystemBase{
                 Lowshooterspeed = 0;
             }}
         if(shooting == true){
-            if(m_timer.get() < 0.5){
+            if(m_timer.get() < 1){
                 Upshooterspeed = 1;
                 Lowshooterspeed = 0;
             }
-            if(m_timer.get() > 0.5){
+            if(m_timer.get() > 1){
                 Upshooterspeed = 1;
                 Lowshooterspeed = 1;
             }
-            if(m_timer.get() > 2){
+            if(m_timer.get() > 2.5){
                 Upshooterspeed = 0;
                 Lowshooterspeed = 0;
                 m_timer.reset();
