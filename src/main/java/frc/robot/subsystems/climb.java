@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 public class climb extends SubsystemBase{
     public Spark climb_Spark = new Spark(0);
-    private CANSparkMax climb_neoMotor = new CANSparkMax(11, MotorType.kBrushless);
+    private CANSparkMax climb_neoMotor = new CANSparkMax(11, MotorType.kBrushed);
     public void init(){
         climb_neoMotor.restoreFactoryDefaults();
         climb_Spark.setSafetyEnabled(false);

@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
   private final drive m_drive = new drive();
   private final climb m_climb = new climb();
   private final shooter m_shooter = new shooter();
-  private final limelight m_Limelight = new limelight();
+  private static limelight m_Limelight = new limelight();
   private final Timer m_timer = new Timer();
   static int m_stage;
   static boolean autonomous_shooter = false;
@@ -58,10 +58,10 @@ public class Robot extends TimedRobot {
     m_shooter.setMotor(autonomous_shooter, false, autonomous_stopShooter,false,autonomous_shooter);
     switch(m_stage){
       case 1:
-        if(m_timer.get() < 0.5){
+        if(m_timer.get() < 1){
           autonomous_shooter = true;
         }
-        if((m_timer.get() < 2) && (m_timer.get() > 0.5)){
+        if((m_timer.get() < 2) && (m_timer.get() > 1)){
           autonomous_shooter = false;
           autonomous_stopShooter = true;
         }

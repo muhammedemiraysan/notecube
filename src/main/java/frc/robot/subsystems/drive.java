@@ -27,7 +27,7 @@ public class drive extends SubsystemBase{
     }
     
     public void arcadeDrive(double x,double y){
-        m_robotDrive.arcadeDrive(x, y);
+        // m_robotDrive.arcadeDrive(x, y);
+        m_robotDrive.tankDrive(x, y);
     }
-    
 }
