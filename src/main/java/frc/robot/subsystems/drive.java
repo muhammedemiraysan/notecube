@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.*;
 public class drive extends SubsystemBase{
     //private CANSparkMax m_lweft_followMotor = new CANSparkMax(1, MotorType.kBrushed);
-    private WPI_VictorSPX m_left_followMotor = new WPI_VictorSPX(16);
-    private WPI_TalonSRX m_left_leadMotor = new WPI_TalonSRX(15);
+    private WPI_TalonSRX m_left_followMotor = new WPI_TalonSRX(15);
+    private WPI_VictorSPX m_left_leadMotor = new WPI_VictorSPX(16);
     private WPI_VictorSPX m_right_followMotor = new WPI_VictorSPX(17);
     private WPI_VictorSPX m_right_leadMotor = new WPI_VictorSPX(18);
     private static DifferentialDrive m_robotDrive;
@@ -27,7 +27,7 @@ public class drive extends SubsystemBase{
     }
     
     public void arcadeDrive(double x,double y){
-        // m_robotDrive.arcadeDrive(x, y);
-        m_robotDrive.tankDrive(x, y);
+        m_robotDrive.arcadeDrive(x, y);
+        // m_robotDrive.tankDrive(x, y);
     }
 }
