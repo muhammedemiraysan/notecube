@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class led extends SubsystemBase{
     private int m_rainbowFirstPixelHue;
-    // PWM port 9
     // Must be a PWM header, not MXP or DIO
-    private final AddressableLED m_led = new AddressableLED(9);
+    private final AddressableLED m_led = new AddressableLED(1);
     // Reuse buffer
     // Default to a length of 60, start empty output
     // Length is expensive to set, so only set it once, then just update data
-    private final AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
+    private final AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(24);
     public void init(){
         m_led.setLength(m_ledBuffer.getLength());
         // Set the data

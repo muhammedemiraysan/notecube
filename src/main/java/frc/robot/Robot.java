@@ -30,7 +30,9 @@ public class Robot extends TimedRobot {
   static boolean autonomous_shooter = false;
   static boolean autonomous_stopShooter = false;
   @Override
-
+  public void disabledInit(){
+    m_led.onecolor(255,0,0);
+  }
   public void robotInit() {
     m_drive.init();
     m_climb.init();
@@ -43,10 +45,16 @@ public class Robot extends TimedRobot {
     m_led.onecolor(255,0,0);
   }
   public void teleopPeriodic() {
-    if(m_shooter.Amfimotorspeed == 1){
-      m_led.onecolor(255,255,0);}
-    if(m_shooter.Amfimotorspeed == -1){
-        m_led.onecolor(255,0,255);}
+    
+    if(m_shooter.Upshooterspeed == 1){
+      m_led.onecolor(255, 100, 0);
+    }
+    if(m_shooter.Upshooterspeed == -1){
+      m_led.onecolor(255, 255, 85);
+    }
+    if(m_shooter.Upshooterspeed == 0){
+      m_led.rainbow();
+    }
     if(gyro_timer.get() > 0.1){
       m_Mpu9250.readSensorData();
       gyro_timer.reset();
