@@ -74,6 +74,9 @@
     }
   },
   "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
     "transitory": {
       "FMSInfo": {
         "open": true

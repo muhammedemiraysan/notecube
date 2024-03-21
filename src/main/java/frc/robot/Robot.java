@@ -4,17 +4,22 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+import java.util.Optional;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.subsystems.drive;
 import frc.robot.subsystems.limelight;
 import frc.robot.subsystems.climb;
 import frc.robot.subsystems.shooter;
-import frc.robot.subsystems.mpu9250;
 import frc.robot.subsystems.led;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class Robot extends TimedRobot {
 
   private static Joystick m_stick = new Joystick(0);
@@ -22,7 +27,6 @@ public class Robot extends TimedRobot {
   private final climb m_climb = new climb();
   private final shooter m_shooter = new shooter();
   private static limelight m_Limelight = new limelight();
-  private static mpu9250 m_Mpu9250 = new mpu9250();
   private final led m_led = new led();
   private final Timer m_timer = new Timer();
   private final Timer gyro_timer = new Timer();
@@ -30,8 +34,17 @@ public class Robot extends TimedRobot {
   static boolean autonomous_shooter = false;
   static boolean autonomous_stopShooter = false;
   @Override
-  public void disabledInit(){
-    m_led.onecolor(255,0,0);
+  public void disabledPeriodic(){
+
+      Optional<Alliance> ally = DriverStation.getAlliance();
+      if (ally.isPresent()) {
+          if (ally.get() == Alliance.Red) {
+            m_led.anim(255,0,0,0,48);
+          }
+          if (ally.get() == Alliance.Blue) {
+            m_led.anim(0,0,255,0,48);
+          }
+    }   
   }
   public void robotInit() {
     m_drive.init();
@@ -42,27 +55,27 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopInit(){
-    m_led.onecolor(255,0,0);
+    m_led.onecolor(255,0,0,0,90);
   }
   public void teleopPeriodic() {
-    
+    SmartDashboard.putNumber("sure: ", DriverStation.getMatchTime());
     if(m_shooter.Upshooterspeed == 1){
-      m_led.onecolor(255, 100, 0);
+      m_led.onecolor(255, 100, 0,48,96);
     }
     if(m_shooter.Upshooterspeed == -1){
-      m_led.onecolor(255, 255, 85);
+      m_led.onecolor(255, 255, 85,48,96);
     }
     if(m_shooter.Upshooterspeed == 0){
-      m_led.rainbow();
+      m_led.onecolor(255, 255, 85,48,96);
     }
-    if(gyro_timer.get() > 0.1){
-      m_Mpu9250.readSensorData();
-      gyro_timer.reset();
-      
+    if(m_shooter.mode_amfi == false){
+      m_led.onecolor(255, 255, 0, 0, 48);
+    }
+    if(m_shooter.mode_amfi == true){
+      m_led.onecolor(0, 255, 0, 0, 48);
     }
     final double stickY = -m_stick.getY();
-    final double stickX = -m_stick.getRawAxis(2);
-    
+    final double stickX = -m_stick.getRawAxis(2); 
     if(m_stick.getRawButton(4) == false){
       if(m_stick.getRawButton(7) == true){}
           m_drive.arcadeDrive((stickY/2), (stickX/2));
@@ -72,7 +85,7 @@ public class Robot extends TimedRobot {
       m_drive.arcadeDrive(stickY,m_Limelight.Turn_pid.calculate(m_Limelight.getX(), 0));}    
     m_climb.setMotor(m_stick.getPOV());
     m_shooter.setMotor(m_stick.getRawButton(5),m_stick.getRawButton(6),m_stick.getRawButtonReleased(5),m_stick.getRawButtonReleased(6),autonomous_shooter
-    ,m_stick.getRawButton(1),m_stick.getRawButton(3),m_stick.getRawButtonReleased(1),m_stick.getRawButtonReleased(3));
+    ,m_stick.getRawButtonPressed(2));
   }
   public void autonomousInit() {
     m_timer.start();
@@ -81,9 +94,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     SmartDashboard.putNumber("autonomous timer", m_timer.get());
     SmartDashboard.putNumber("autonomous stage", m_stage);
+    SmartDashboard.putNumber("sure: ", DriverStation.getMatchTime());
     SmartDashboard.putBoolean("autonomous shooter", autonomous_shooter);
     SmartDashboard.putBoolean("autonomous stopShooter", autonomous_stopShooter);
-    m_shooter.setMotor(autonomous_shooter, false, autonomous_stopShooter,false,autonomous_shooter,false,false,false,false);
+    m_shooter.setMotor(autonomous_shooter, false, autonomous_stopShooter,false,autonomous_shooter,false);
     switch(m_stage){
       case 1:
         if(m_timer.get() < 1){
